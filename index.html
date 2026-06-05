@@ -47,7 +47,7 @@ body {
     word-wrap: break-word;
 }
 /* Proper placement */
-#inviteesField { top: 68%; left: 50%; transform: translate(-50%, -50%); font-size: 1.4vw; width: 70%; }
+#inviteesField { top: 68%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8vw; width: 70%; }
 #nameField { top: 76%; left: 50%; transform: translate(-50%, -50%); font-size: 2.2vw; width: 70%; }
 #toField { top: 88%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6vw; width: 70%; }
 #downloadBtn {
@@ -79,7 +79,7 @@ body {
         <!-- Editable fields -->
         <div id="inviteesField" class="editable-text">Invitees:- Ladies (0) & Gents (0)</div>
         <div id="nameField" class="editable-text">Child's Name</div>
-        <div id="toField" class="editable-text">To:- Guest Name</div>
+        <div id="toField" class="editable-text">To:- ________________</div>
     </div>
 </div>
 
@@ -97,7 +97,7 @@ function updateCard() {
     const ladies = document.getElementById('ladiesInput').value || 0;
     const gents = document.getElementById('gentsInput').value || 0;
     const name = document.getElementById('nameInput').value || "Child's Name";
-    const to = document.getElementById('toInput').value || "Guest Name";
+    const to = document.getElementById('toInput').value || "________________";
 
     document.getElementById('inviteesField').innerText = `Invitees:- Ladies (${ladies}) & Gents (${gents})`;
     document.getElementById('nameField').innerText = name;
