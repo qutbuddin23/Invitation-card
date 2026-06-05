@@ -47,9 +47,9 @@ body {
     word-wrap: break-word;
 }
 /* Proper placement */
-#inviteesField { top: 68%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8vw; width: 70%; }
-#nameField { top: 76%; left: 50%; transform: translate(-50%, -50%); font-size: 2.2vw; width: 70%; }
-#toField { top: 88%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6vw; width: 70%; }
+#toField { top: 68%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8vw; width: 70%; }
+#inviteesField { top: 76%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8vw; width: 70%; }
+#nameField { top: 84%; left: 50%; transform: translate(-50%, -50%); font-size: 2.2vw; width: 70%; }
 #downloadBtn {
     background-color: #007bff;
     color: white;
@@ -67,7 +67,6 @@ body {
     <input type="number" id="ladiesInput" placeholder="Ladies Count" value="0">
     <input type="number" id="gentsInput" placeholder="Gents Count" value="0">
     <input type="text" id="nameInput" placeholder="Enter Child's Name">
-    <input type="text" id="toInput" placeholder="Enter Guest Name">
     <button onclick="updateCard()">Update</button>
     <button onclick="downloadCard()">Download Invitation</button>
 </div>
@@ -77,9 +76,9 @@ body {
         <!-- Background image from base64 -->
         <img id="cardImage" alt="Invitation">
         <!-- Editable fields -->
+        <div id="toField" class="editable-text">To:- ________________</div>
         <div id="inviteesField" class="editable-text">Invitees:- Ladies (0) & Gents (0)</div>
         <div id="nameField" class="editable-text">Child's Name</div>
-        <div id="toField" class="editable-text">To:- ________________</div>
     </div>
 </div>
 
@@ -97,11 +96,10 @@ function updateCard() {
     const ladies = document.getElementById('ladiesInput').value || 0;
     const gents = document.getElementById('gentsInput').value || 0;
     const name = document.getElementById('nameInput').value || "Child's Name";
-    const to = document.getElementById('toInput').value || "________________";
 
+    document.getElementById('toField').innerText = `To:- ________________`;
     document.getElementById('inviteesField').innerText = `Invitees:- Ladies (${ladies}) & Gents (${gents})`;
     document.getElementById('nameField').innerText = name;
-    document.getElementById('toField').innerText = `To:- ${to}`;
 }
 
 function downloadCard() {
