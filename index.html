@@ -2,65 +2,73 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Invitation Editor</title>
+<title>Draggable Invitation Editor</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
 <style>
-body { font-family: Arial, sans-serif; background: #f0f0f0; text-align: center; margin:0; padding:20px; }
-.controls { margin-bottom:20px; display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
-.controls input, .controls button { padding:10px; font-size:16px; }
-#card-container { position:relative; width:90%; max-width:800px; margin:0 auto; }
-#card { position:relative; width:100%; }
-#card img { width:100%; height:auto; border-radius:10px; display:block; }
-.editable-text { position:absolute; font-weight:bold; color:black; text-align:center; font-family:'Times New Roman', serif; word-wrap:break-word; }
-#toField { top:65%; left:50%; transform:translate(-50%, -50%); font-size:2vw; }
-#inviteesField { top:58%; left:50%; transform:translate(-50%, -50%); font-size:1.8vw; }
-#downloadBtn { background-color:#007bff; color:white; border:none; border-radius:5px; cursor:pointer; }
+body { font-family: Arial, sans-serif; background:#f0f0f0; text-align:center; margin:0; padding:20px; }
+#controls { margin-bottom:10px; display:flex; gap:5px; flex-wrap:wrap; justify-content:center; }
+#canvas-container { display:inline-block; border:1px solid #ccc; }
+button,input { padding:5px; font-size:16px; }
 </style>
 </head>
 <body>
 
-<h2>Editable Invitation</h2>
+<h2>Editable & Draggable Invitation</h2>
 
-<div class="controls">
-    <input type="text" id="toInput" placeholder="Enter Guest Name">
-    <input type="number" id="ladiesInput" placeholder="Ladies Count">
-    <input type="number" id="gentsInput" placeholder="Gents Count">
-    <button onclick="updateCard()">Update</button>
-    <button id="downloadBtn" onclick="downloadCard()">Download Invitation</button>
+<div id="controls">
+    <input type="text" id="textInput" placeholder="Enter text">
+    <button onclick="addText()">Add Text</button>
+    <button onclick="deleteSelected()">Delete Selected</button>
+    <button onclick="download()">Download PNG</button>
 </div>
 
-<div id="card-container">
-    <div id="card">
-        <img id="cardImage" alt="Invitation">
-        <div id="toField" class="editable-text">Guest Name</div>
-        <div id="inviteesField" class="editable-text">Ladies (25) & Gents (35)</div>
-    </div>
+<div id="canvas-container">
+    <canvas id="invitationCanvas" width="800" height="1200"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
-// Load Base64 from local file dynamically
-fetch('cb-base64-string.txt')
-    .then(response => response.text())
-    .then(base64 => {
-        document.getElementById('cardImage').src = 'data:image/jpeg;base64,' + base64.trim();
-    })
-    .catch(err => console.error('Failed to load Base64 image:', err));
+const canvas = new fabric.Canvas('invitationCanvas');
 
-function updateCard() {
-    const guest = document.getElementById('toInput').value || "Guest Name";
-    const ladies = document.getElementById('ladiesInput').value || 25;
-    const gents = document.getElementById('gentsInput').value || 35;
-    document.getElementById('toField').innerText = guest;
-    document.getElementById('inviteesField').innerText = `Ladies (${ladies}) & Gents (${gents})`;
+// Load your uploaded image as background
+fabric.Image.fromURL('/mnt/data/1000050063.jpg', function(img) {
+    img.set({ selectable: false });
+    img.scaleToWidth(canvas.width);
+    img.scaleToHeight(canvas.height);
+    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+});
+
+// Add new text
+function addText() {
+    const value = document.getElementById('textInput').value.trim();
+    if (!value) return;
+    const text = new fabric.IText(value, {
+        left: 100,
+        top: 100,
+        fontSize: 24,
+        fill: 'black',
+        fontFamily: 'Times New Roman',
+        editable: true
+    });
+    canvas.add(text).setActiveObject(text);
+    document.getElementById('textInput').value = '';
 }
 
-function downloadCard() {
-    html2canvas(document.getElementById('card')).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'invitation.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-    });
+// Delete selected text
+function deleteSelected() {
+    const active = canvas.getActiveObject();
+    if (active) canvas.remove(active);
+}
+
+// Download the canvas as PNG
+function download() {
+    canvas.discardActiveObject();
+    canvas.renderAll();
+    const dataURL = canvas.toDataURL({ format: 'png' });
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'invitation.png';
+    link.click();
 }
 </script>
 
