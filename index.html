@@ -47,9 +47,9 @@ body {
     word-wrap: break-word;
 }
 /* Proper placement */
-#inviteesField { top: 72%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6vw; width: 70%; }
-#nameField { top: 78%; left: 50%; transform: translate(-50%, -50%); font-size: 2vw; width: 70%; }
-#toField { top: 85%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6vw; width: 70%; }
+#inviteesField { top: 68%; left: 50%; transform: translate(-50%, -50%); font-size: 1.4vw; width: 70%; }
+#nameField { top: 76%; left: 50%; transform: translate(-50%, -50%); font-size: 2.2vw; width: 70%; }
+#toField { top: 88%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6vw; width: 70%; }
 #downloadBtn {
     background-color: #007bff;
     color: white;
@@ -64,7 +64,8 @@ body {
 <h2>Editable Birthday Invitation</h2>
 
 <div id="controls">
-    <input type="text" id="inviteesInput" placeholder="Enter Invitees">
+    <input type="number" id="ladiesInput" placeholder="Ladies Count" value="0">
+    <input type="number" id="gentsInput" placeholder="Gents Count" value="0">
     <input type="text" id="nameInput" placeholder="Enter Child's Name">
     <input type="text" id="toInput" placeholder="Enter Guest Name">
     <button onclick="updateCard()">Update</button>
@@ -76,9 +77,9 @@ body {
         <!-- Background image from base64 -->
         <img id="cardImage" alt="Invitation">
         <!-- Editable fields -->
-        <div id="inviteesField" class="editable-text">Invitees Here</div>
+        <div id="inviteesField" class="editable-text">Invitees:- Ladies (0) & Gents (0)</div>
         <div id="nameField" class="editable-text">Child's Name</div>
-        <div id="toField" class="editable-text">To: Guest</div>
+        <div id="toField" class="editable-text">To:- Guest Name</div>
     </div>
 </div>
 
@@ -93,13 +94,14 @@ fetch('cb-base64-string.txt')
     .catch(err => console.error('Failed to load Base64 image:', err));
 
 function updateCard() {
-    const invitees = document.getElementById('inviteesInput').value || "Invitees Here";
+    const ladies = document.getElementById('ladiesInput').value || 0;
+    const gents = document.getElementById('gentsInput').value || 0;
     const name = document.getElementById('nameInput').value || "Child's Name";
-    const to = document.getElementById('toInput').value || "To: Guest";
+    const to = document.getElementById('toInput').value || "Guest Name";
 
-    document.getElementById('inviteesField').innerText = invitees;
+    document.getElementById('inviteesField').innerText = `Invitees:- Ladies (${ladies}) & Gents (${gents})`;
     document.getElementById('nameField').innerText = name;
-    document.getElementById('toField').innerText = to;
+    document.getElementById('toField').innerText = `To:- ${to}`;
 }
 
 function downloadCard() {
