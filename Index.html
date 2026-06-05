@@ -30,8 +30,7 @@ body { font-family: Arial, sans-serif; background: #f0f0f0; text-align: center; 
 
 <div id="card-container">
     <div id="card">
-        <!-- Base64 image embedded for Vercel hosting -->
-        <img id="cardImage" src="data:image/jpeg;base64,{{BASE64_IMAGE_HERE}}" alt="Invitation">
+        <img id="cardImage" alt="Invitation">
         <div id="toField" class="editable-text">Guest Name</div>
         <div id="inviteesField" class="editable-text">Ladies (25) & Gents (35)</div>
     </div>
@@ -39,6 +38,14 @@ body { font-family: Arial, sans-serif; background: #f0f0f0; text-align: center; 
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
+// Load Base64 from local file dynamically
+fetch('cb-base64-string.txt')
+    .then(response => response.text())
+    .then(base64 => {
+        document.getElementById('cardImage').src = 'data:image/jpeg;base64,' + base64.trim();
+    })
+    .catch(err => console.error('Failed to load Base64 image:', err));
+
 function updateCard() {
     const guest = document.getElementById('toInput').value || "Guest Name";
     const ladies = document.getElementById('ladiesInput').value || 25;
