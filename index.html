@@ -73,8 +73,8 @@ body {
 
 <div id="card-container">
     <div id="card">
-        <!-- Background uploaded image -->
-        <img id="cardImage" src="/mnt/data/file_00000000702872078c8ae932e48e513a" alt="Invitation">
+        <!-- Background image from base64 -->
+        <img id="cardImage" alt="Invitation">
         <!-- Editable fields -->
         <div id="inviteesField" class="editable-text">Invitees Here</div>
         <div id="nameField" class="editable-text">Child's Name</div>
@@ -84,6 +84,14 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
+// Load Base64 image from file
+fetch('cb-base64-string.txt')
+    .then(response => response.text())
+    .then(base64 => {
+        document.getElementById('cardImage').src = 'data:image/jpeg;base64,' + base64.trim();
+    })
+    .catch(err => console.error('Failed to load Base64 image:', err));
+
 function updateCard() {
     const invitees = document.getElementById('inviteesInput').value || "Invitees Here";
     const name = document.getElementById('nameInput').value || "Child's Name";
